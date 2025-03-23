@@ -22,4 +22,7 @@ static GimpParamDef load_args[] = {
     {GIMP_PDB_STRING, "raw_filename", "The name entered"},
     {GIMP_PDB_INT32, "load_mipmaps", "Load mipmaps if present"}};
 
+static GimpParamDef load_return_vals[] = {
+    {GIMP_PDB_IMAGE, "image", "Output image"}};
+
 MAIN()
