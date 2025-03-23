@@ -38,8 +38,8 @@ static void
 query (void)
 {
   gimp_install_procedure (LOAD_PROC,
-                          "Loads files in TGPCDX image format",
-                          "Loads files in TGPCDX image format",
+                          "Loads files in the TGPCDX file format",
+                          "Loads files in the TGPCDX file format",
                           PLUG_IN_AUTHOR,
                           PLUG_IN_COPYRIGHT,
                           PLUG_IN_VERSION,
