@@ -3,6 +3,8 @@
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
+#define LOAD_PROC "file-tgpcdx-load"
+
 #define PLUG_IN_AUTHOR "Thomas Clark"
 #define PLUG_IN_BINARY "file-tgpcdx"
 #define PLUG_IN_COPYRIGHT "Copyright (C) 2025 Thomas Clark. All rights reserved."
