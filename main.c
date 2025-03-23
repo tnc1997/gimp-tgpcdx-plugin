@@ -28,3 +28,14 @@ static GimpParamDef load_return_vals[] = {
     {GIMP_PDB_IMAGE, "image", "Output image"}};
 
 MAIN()
+
+static void query(void) {
+  gimp_install_procedure(LOAD_PROC, "Loads files in TGPCDX image format.",
+                         "Loads files in TGPCDX image format.", PLUG_IN_AUTHOR,
+                         PLUG_IN_COPYRIGHT, PLUG_IN_VERSION, "TGPCDX image",
+                         NULL, GIMP_PLUGIN, G_N_ELEMENTS(load_args),
+                         G_N_ELEMENTS(load_return_vals), load_args,
+                         load_return_vals);
+
+  gimp_register_load_handler(LOAD_PROC, "tgpcdx", NULL);
+}
