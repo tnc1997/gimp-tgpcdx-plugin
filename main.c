@@ -16,7 +16,4 @@ static void run(const gchar *name, gint nparams, const GimpParam *param,
 
 const GimpPlugInInfo PLUG_IN_INFO = {NULL, NULL, query, run};
 
-int main(void) {
-  printf("Hello, World!\n");
-  return 0;
-}
+MAIN()
