@@ -13,10 +13,10 @@
 
 static void query (void);
 
-static void run (const gchar     *name,
-                 gint             nparams,
+static void run (const char      *name,
+                 int              nparams,
                  const GimpParam *param,
-                 gint            *nreturn_vals,
+                 int             *nreturn_vals,
                  GimpParam      **return_vals);
 
 const GimpPlugInInfo PLUG_IN_INFO = { NULL, NULL, query, run };
