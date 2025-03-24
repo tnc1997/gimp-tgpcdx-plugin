@@ -24,8 +24,7 @@ const GimpPlugInInfo PLUG_IN_INFO = { NULL, NULL, query, run };
 static GimpParamDef load_args[] = {
   { GIMP_PDB_INT32,  "run_mode",     "Interactive, non-interactive" },
   { GIMP_PDB_STRING, "filename",     "The name of the file to load" },
-  { GIMP_PDB_STRING, "raw_filename", "The name entered"             },
-  { GIMP_PDB_INT32,  "load_mipmaps", "Load mipmaps if present"      }
+  { GIMP_PDB_STRING, "raw_filename", "The name entered"             }
 };
 
 static GimpParamDef load_return_vals[] = {
