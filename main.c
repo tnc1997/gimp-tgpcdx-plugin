@@ -11,6 +11,8 @@
 #define PLUG_IN_ROLE      "gimp-file-tgpcdx"
 #define PLUG_IN_VERSION   "1.0.0"
 
+static gint32 load_image (const char *filename, GError **error);
+
 static void query (void);
 
 static void run (const char      *name,
