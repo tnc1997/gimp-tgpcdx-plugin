@@ -54,3 +54,46 @@ query (void)
 
   gimp_register_load_handler (LOAD_PROC, "tgpcdx", NULL);
 }
+
+static void
+run (const char      *name,
+     int              nparams,
+     const GimpParam *param,
+     int             *nreturn_vals,
+     GimpParam      **return_vals)
+{
+  static GimpParam  values[2];
+  GimpRunMode       run_mode;
+  GimpPDBStatusType status = GIMP_PDB_SUCCESS;
+  GError           *error  = NULL;
+
+  run_mode = param[0].data.d_int32;
+
+  *nreturn_vals = 1;
+  *return_vals  = values;
+
+  values[0].type          = GIMP_PDB_STATUS;
+  values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
+
+  if (strcmp (name, LOAD_PROC) == 0)
+    {
+      const int IMAGE_ID = load_image (param[1].data.d_string, &error);
+
+      if (IMAGE_ID != -1)
+        {
+          *nreturn_vals          = 2;
+          values[1].type         = GIMP_PDB_IMAGE;
+          values[1].data.d_image = IMAGE_ID;
+        }
+      else
+        {
+          status = GIMP_PDB_EXECUTION_ERROR;
+        }
+    }
+  else
+    {
+      status = GIMP_PDB_CALLING_ERROR;
+    }
+
+  values[0].data.d_status = status;
+}
