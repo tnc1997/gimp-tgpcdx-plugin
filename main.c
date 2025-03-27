@@ -11,7 +11,7 @@
 #define PLUG_IN_ROLE      "gimp-file-tgpcdx"
 #define PLUG_IN_VERSION   "1.0.0"
 
-static gint32 load_image (const char *filename, GError **error);
+static int load_image (const char *filename, GError **error);
 
 static void query (void);
 
@@ -96,4 +96,22 @@ run (const char      *name,
     }
 
   values[0].data.d_status = status;
+}
+
+static int
+load_image (const gchar *filename, GError **error)
+{
+  gimp_progress_init_printf ("Opening '%s'", filename);
+
+  // TODO: Read tgpcdx file.
+
+  // TODO: Convert tgpcdx to dds.
+
+  // TODO: Write dds file.
+
+  // TODO: Run file dds load procedure.
+
+  // TODO: Handle return values.
+
+  return -1;
 }
