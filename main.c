@@ -105,6 +105,36 @@ load_image (const gchar *filename, GError **error)
 
   // TODO: Read tgpcdx file.
 
+  FILE *file = fopen (filename, "rb");
+
+  if (file == NULL)
+    {
+      g_set_error (error, 0, 0, "Failed to open the file '%s'", filename);
+
+      return -1;
+    }
+
+  int i, c;
+
+  for (i = 0; (c = fgetc (file)) != EOF; i++)
+    {
+      printf ("%02x", c);
+
+      if (i % 16 == 15)
+        {
+          putchar ('\n');
+        }
+      else if (i % 2 == 1)
+        {
+          putchar (' ');
+        }
+    }
+
+  if (i % 16 != 0)
+    {
+      putchar ('\n');
+    }
+
   // TODO: Convert tgpcdx to dds.
 
   // TODO: Write dds file.
