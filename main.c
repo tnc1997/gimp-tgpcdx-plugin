@@ -16,9 +16,9 @@ static int load_image (const char *filename, GError **error);
 static void query (void);
 
 static void run (const char      *name,
-                 int              nparams,
+                 int              n_params,
                  const GimpParam *param,
-                 int             *nreturn_vals,
+                 int             *n_return_vals,
                  GimpParam      **return_vals);
 
 const GimpPlugInInfo PLUG_IN_INFO = { NULL, NULL, query, run };
@@ -57,9 +57,9 @@ query (void)
 
 static void
 run (const char      *name,
-     int              nparams,
+     int              n_params,
      const GimpParam *param,
-     int             *nreturn_vals,
+     int             *n_return_vals,
      GimpParam      **return_vals)
 {
   static GimpParam  values[2];
@@ -69,8 +69,8 @@ run (const char      *name,
 
   run_mode = param[0].data.d_int32;
 
-  *nreturn_vals = 1;
-  *return_vals  = values;
+  *n_return_vals = 1;
+  *return_vals   = values;
 
   values[0].type          = GIMP_PDB_STATUS;
   values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
@@ -81,7 +81,7 @@ run (const char      *name,
 
       if (IMAGE_ID != -1)
         {
-          *nreturn_vals          = 2;
+          *n_return_vals         = 2;
           values[1].type         = GIMP_PDB_IMAGE;
           values[1].data.d_image = IMAGE_ID;
         }
