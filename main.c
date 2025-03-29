@@ -101,7 +101,7 @@ run (const char      *name,
 }
 
 static int
-load_image (const gchar *filename, GError **error)
+load_image (const char *filename, GError **error)
 {
   gimp_progress_init_printf ("Opening '%s'", filename);
 
