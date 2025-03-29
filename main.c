@@ -11,8 +11,6 @@
 #define PLUG_IN_ROLE      "gimp-file-tgpcdx"
 #define PLUG_IN_VERSION   "1.0.0"
 
-static int load_image (const char *filename, GError **error);
-
 static void query (void);
 
 static void run (const char      *name,
@@ -20,6 +18,10 @@ static void run (const char      *name,
                  const GimpParam *param,
                  int             *n_return_vals,
                  GimpParam      **return_vals);
+
+static int load_image (const char *filename, GError **error);
+
+static int read_prelude (unsigned char *buffer, FILE *file);
 
 const GimpPlugInInfo PLUG_IN_INFO = { NULL, NULL, query, run };
 
