@@ -147,3 +147,24 @@ load_image (const gchar *filename, GError **error)
 
   return -1;
 }
+
+static int
+read_prelude (unsigned char *buffer, FILE *file)
+{
+  const unsigned char prelude[8] = { 0x53, 0x45, 0x52, 0x5a,
+                                     0x00, 0x00, 0x01, 0x00 };
+
+  for (int i = 0; i < sizeof (prelude); i++)
+    {
+      const unsigned char c = fgetc (file);
+
+      if (c != prelude[i])
+        {
+          return -1;
+        }
+
+      buffer[i] = c;
+    }
+
+  return 0;
+}
