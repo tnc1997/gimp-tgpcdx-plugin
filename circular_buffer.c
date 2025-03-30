@@ -5,6 +5,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+int circular_buffer_get_element_size (const CircularBuffer *circular_buffer,
+                                      size_t               *element_size);
+
 int
 circular_buffer_free (const CircularBuffer *circular_buffer)
 {
@@ -44,6 +47,16 @@ int
 circular_buffer_is_full (const CircularBuffer *circular_buffer, bool *is_full)
 {
   *is_full = circular_buffer->size == circular_buffer->capacity;
+
+  return 0;
+}
+
+int
+circular_buffer_get_element_size (const CircularBuffer *circular_buffer,
+                                  size_t               *element_size)
+{
+  *element_size = (circular_buffer->end - circular_buffer->start) /
+                  circular_buffer->capacity;
 
   return 0;
 }
