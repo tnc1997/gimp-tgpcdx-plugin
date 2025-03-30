@@ -31,3 +31,19 @@ circular_buffer_init (CircularBuffer *circular_buffer,
 
   return 0;
 }
+
+int
+circular_buffer_is_empty (const CircularBuffer *circular_buffer, bool *is_empty)
+{
+  *is_empty = circular_buffer->size == 0;
+
+  return 0;
+}
+
+int
+circular_buffer_is_full (const CircularBuffer *circular_buffer, bool *is_full)
+{
+  *is_full = circular_buffer->size == circular_buffer->capacity;
+
+  return 0;
+}
