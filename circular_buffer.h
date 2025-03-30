@@ -28,4 +28,10 @@ int circular_buffer_is_empty (const CircularBuffer *circular_buffer,
 int circular_buffer_is_full (const CircularBuffer *circular_buffer,
                              bool                 *is_full);
 
+int circular_buffer_pop_element (CircularBuffer *circular_buffer,
+                                 void           *element);
+
+int circular_buffer_push_element (CircularBuffer *circular_buffer,
+                                  const void     *element);
+
 #endif
