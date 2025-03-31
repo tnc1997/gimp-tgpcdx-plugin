@@ -17,6 +17,15 @@ circular_buffer_free (const CircularBuffer *circular_buffer)
 }
 
 int
+circular_buffer_get_capacity (const CircularBuffer *circular_buffer,
+                              size_t               *capacity)
+{
+  *capacity = circular_buffer->capacity;
+
+  return 0;
+}
+
+int
 circular_buffer_init (CircularBuffer *circular_buffer,
                       const size_t    capacity,
                       const size_t    size)

@@ -18,6 +18,9 @@ struct _CircularBuffer
 
 int circular_buffer_free (const CircularBuffer *circular_buffer);
 
+int circular_buffer_get_capacity (const CircularBuffer *circular_buffer,
+                                  size_t               *capacity);
+
 int circular_buffer_init (CircularBuffer *circular_buffer,
                           size_t          capacity,
                           size_t          size);
