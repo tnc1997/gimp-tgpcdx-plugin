@@ -26,6 +26,15 @@ circular_buffer_get_capacity (const CircularBuffer *circular_buffer,
 }
 
 int
+circular_buffer_get_reserve (const CircularBuffer *circular_buffer,
+                             size_t               *reserve)
+{
+  *reserve = circular_buffer->capacity - circular_buffer->size;
+
+  return 0;
+}
+
+int
 circular_buffer_get_size (const CircularBuffer *circular_buffer, size_t *size)
 {
   *size = circular_buffer->size;
