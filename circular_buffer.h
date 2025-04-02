@@ -21,6 +21,10 @@ int circular_buffer_free (const CircularBuffer *circular_buffer);
 int circular_buffer_get_capacity (const CircularBuffer *circular_buffer,
                                   size_t               *capacity);
 
+int circular_buffer_get_element_at (const CircularBuffer *circular_buffer,
+                                    size_t                index,
+                                    void                 *element);
+
 int circular_buffer_get_reserve (const CircularBuffer *circular_buffer,
                                  size_t               *reserve);
 

@@ -26,6 +26,23 @@ circular_buffer_get_capacity (const CircularBuffer *circular_buffer,
 }
 
 int
+circular_buffer_get_element_at (const CircularBuffer *circular_buffer,
+                                const size_t          index,
+                                void                 *element)
+{
+  size_t element_size;
+
+  circular_buffer_get_element_size (circular_buffer, &element_size);
+
+  if (memcpy (element, circular_buffer->start + index, element_size) == NULL)
+    {
+      return -1;
+    }
+
+  return 0;
+}
+
+int
 circular_buffer_get_reserve (const CircularBuffer *circular_buffer,
                              size_t               *reserve)
 {
