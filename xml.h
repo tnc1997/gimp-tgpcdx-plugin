@@ -9,6 +9,10 @@ typedef struct _XmlName XmlName;
 
 typedef struct _XmlNode XmlNode;
 
+int xml_document_free (const XmlDocument *document);
+
+int xml_document_init (XmlDocument *document);
+
 struct _XmlAttribute
 {
   XmlName *name;
