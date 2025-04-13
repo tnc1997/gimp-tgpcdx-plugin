@@ -5,15 +5,25 @@
 #include <stdlib.h>
 #include <string.h>
 
+struct CircularBuffer
+{
+  void  *start;
+  void  *end;
+  void  *head;
+  void  *tail;
+  size_t capacity;
+  size_t size;
+};
+
 int circular_buffer_get_element_size (const CircularBuffer *circular_buffer,
                                       size_t               *element_size);
 
-int
-circular_buffer_free (const CircularBuffer *circular_buffer)
+void
+circular_buffer_free (CircularBuffer *circular_buffer)
 {
   free (circular_buffer->start);
 
-  return 0;
+  free (circular_buffer);
 }
 
 int
@@ -59,14 +69,19 @@ circular_buffer_get_size (const CircularBuffer *circular_buffer, size_t *size)
   return 0;
 }
 
-int
-circular_buffer_init (CircularBuffer *circular_buffer,
-                      const size_t    capacity,
-                      const size_t    size)
+CircularBuffer *
+circular_buffer_init (const size_t capacity, const size_t size)
 {
-  if ((circular_buffer->start = malloc (capacity * size)) == NULL)
+  CircularBuffer *circular_buffer = malloc (sizeof (CircularBuffer));
+  if (circular_buffer == NULL)
     {
-      return -1;
+      return NULL;
+    }
+
+  circular_buffer->start = malloc (capacity * size);
+  if (circular_buffer->start == NULL)
+    {
+      return NULL;
     }
 
   circular_buffer->end      = circular_buffer->start + capacity * size;
@@ -75,7 +90,7 @@ circular_buffer_init (CircularBuffer *circular_buffer,
   circular_buffer->capacity = capacity;
   circular_buffer->size     = 0;
 
-  return 0;
+  return circular_buffer;
 }
 
 int
