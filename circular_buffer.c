@@ -15,8 +15,7 @@ struct CircularBuffer
   size_t size;
 };
 
-int circular_buffer_get_element_size (const CircularBuffer *circular_buffer,
-                                      size_t               *element_size);
+size_t get_element_size (const CircularBuffer *circular_buffer);
 
 void
 circular_buffer_free (CircularBuffer *circular_buffer)
@@ -26,60 +25,56 @@ circular_buffer_free (CircularBuffer *circular_buffer)
   free (circular_buffer);
 }
 
-int
-circular_buffer_get_capacity (const CircularBuffer *circular_buffer,
-                              size_t               *capacity)
+size_t
+circular_buffer_get_capacity (const CircularBuffer *circular_buffer)
 {
-  *capacity = circular_buffer->capacity;
-
-  return 0;
+  return circular_buffer->capacity;
 }
 
-int
+void *
 circular_buffer_get_element_at (const CircularBuffer *circular_buffer,
-                                const size_t          index,
-                                void                 *element)
+                                const size_t          index)
 {
-  size_t element_size;
+  const size_t element_size = get_element_size (circular_buffer);
 
-  circular_buffer_get_element_size (circular_buffer, &element_size);
+  void *element;
+
+  if ((element = malloc (element_size)) == NULL)
+    {
+      return NULL;
+    }
 
   if (memcpy (element, circular_buffer->start + index, element_size) == NULL)
     {
-      return -1;
+      return NULL;
     }
 
-  return 0;
+  return element;
 }
 
-int
-circular_buffer_get_reserve (const CircularBuffer *circular_buffer,
-                             size_t               *reserve)
+size_t
+circular_buffer_get_reserve (const CircularBuffer *circular_buffer)
 {
-  *reserve = circular_buffer->capacity - circular_buffer->size;
-
-  return 0;
+  return circular_buffer->capacity - circular_buffer->size;
 }
 
-int
-circular_buffer_get_size (const CircularBuffer *circular_buffer, size_t *size)
+size_t
+circular_buffer_get_size (const CircularBuffer *circular_buffer)
 {
-  *size = circular_buffer->size;
-
-  return 0;
+  return circular_buffer->size;
 }
 
 CircularBuffer *
 circular_buffer_init (const size_t capacity, const size_t size)
 {
-  CircularBuffer *circular_buffer = malloc (sizeof (CircularBuffer));
-  if (circular_buffer == NULL)
+  CircularBuffer *circular_buffer;
+
+  if ((circular_buffer = malloc (sizeof (CircularBuffer))) == NULL)
     {
       return NULL;
     }
 
-  circular_buffer->start = malloc (capacity * size);
-  if (circular_buffer->start == NULL)
+  if ((circular_buffer->start = malloc (capacity * size)) == NULL)
     {
       return NULL;
     }
@@ -93,32 +88,33 @@ circular_buffer_init (const size_t capacity, const size_t size)
   return circular_buffer;
 }
 
-int
-circular_buffer_is_empty (const CircularBuffer *circular_buffer, bool *is_empty)
+bool
+circular_buffer_is_empty (const CircularBuffer *circular_buffer)
 {
-  *is_empty = circular_buffer->size == 0;
-
-  return 0;
+  return circular_buffer->size == 0;
 }
 
-int
-circular_buffer_is_full (const CircularBuffer *circular_buffer, bool *is_full)
+bool
+circular_buffer_is_full (const CircularBuffer *circular_buffer)
 {
-  *is_full = circular_buffer->size == circular_buffer->capacity;
-
-  return 0;
+  return circular_buffer->size == circular_buffer->capacity;
 }
 
-int
-circular_buffer_pop_element (CircularBuffer *circular_buffer, void *element)
+void *
+circular_buffer_pop_element (CircularBuffer *circular_buffer)
 {
-  size_t element_size;
+  const size_t element_size = get_element_size (circular_buffer);
 
-  circular_buffer_get_element_size (circular_buffer, &element_size);
+  void *element;
+
+  if ((element = malloc (element_size)) == NULL)
+    {
+      return NULL;
+    }
 
   if (memcpy (element, circular_buffer->tail, element_size) == NULL)
     {
-      return -1;
+      return NULL;
     }
 
   circular_buffer->tail = circular_buffer->tail + element_size;
@@ -133,20 +129,18 @@ circular_buffer_pop_element (CircularBuffer *circular_buffer, void *element)
       circular_buffer->size -= 1;
     }
 
-  return 0;
+  return element;
 }
 
-int
+void
 circular_buffer_push_element (CircularBuffer *circular_buffer,
                               const void     *element)
 {
-  size_t element_size;
-
-  circular_buffer_get_element_size (circular_buffer, &element_size);
+  const size_t element_size = get_element_size (circular_buffer);
 
   if (memcpy (circular_buffer->head, element, element_size) == NULL)
     {
-      return -1;
+      return;
     }
 
   circular_buffer->head = circular_buffer->head + element_size;
@@ -160,16 +154,11 @@ circular_buffer_push_element (CircularBuffer *circular_buffer,
     {
       circular_buffer->size += 1;
     }
-
-  return 0;
 }
 
-int
-circular_buffer_get_element_size (const CircularBuffer *circular_buffer,
-                                  size_t               *element_size)
+size_t
+get_element_size (const CircularBuffer *circular_buffer)
 {
-  *element_size = (circular_buffer->end - circular_buffer->start) /
-                  circular_buffer->capacity;
-
-  return 0;
+  return (circular_buffer->end - circular_buffer->start) /
+         circular_buffer->capacity;
 }

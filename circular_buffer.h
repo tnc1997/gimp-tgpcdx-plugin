@@ -8,31 +8,24 @@ typedef struct CircularBuffer CircularBuffer;
 
 void circular_buffer_free (CircularBuffer *circular_buffer);
 
-int circular_buffer_get_capacity (const CircularBuffer *circular_buffer,
-                                  size_t               *capacity);
+size_t circular_buffer_get_capacity (const CircularBuffer *circular_buffer);
 
-int circular_buffer_get_element_at (const CircularBuffer *circular_buffer,
-                                    size_t                index,
-                                    void                 *element);
+void *circular_buffer_get_element_at (const CircularBuffer *circular_buffer,
+                                      size_t                index);
 
-int circular_buffer_get_reserve (const CircularBuffer *circular_buffer,
-                                 size_t               *reserve);
+size_t circular_buffer_get_reserve (const CircularBuffer *circular_buffer);
 
-int circular_buffer_get_size (const CircularBuffer *circular_buffer,
-                              size_t               *size);
+size_t circular_buffer_get_size (const CircularBuffer *circular_buffer);
 
 CircularBuffer *circular_buffer_init (size_t capacity, size_t size);
 
-int circular_buffer_is_empty (const CircularBuffer *circular_buffer,
-                              bool                 *is_empty);
+bool circular_buffer_is_empty (const CircularBuffer *circular_buffer);
 
-int circular_buffer_is_full (const CircularBuffer *circular_buffer,
-                             bool                 *is_full);
+bool circular_buffer_is_full (const CircularBuffer *circular_buffer);
 
-int circular_buffer_pop_element (CircularBuffer *circular_buffer,
-                                 void           *element);
+void *circular_buffer_pop_element (CircularBuffer *circular_buffer);
 
-int circular_buffer_push_element (CircularBuffer *circular_buffer,
-                                  const void     *element);
+void circular_buffer_push_element (CircularBuffer *circular_buffer,
+                                   const void     *element);
 
 #endif
