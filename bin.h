@@ -106,4 +106,52 @@ typedef enum BinElementType {
   BIN_ELEMENT_TYPE_CLOSING   = 0x70,
 } BinElementType;
 
+typedef enum RailWorksDataType
+{
+  /**
+   * int
+   */
+  RAILWORKS_DATA_TYPE_BOOL,
+  /**
+   * char *
+   */
+  RAILWORKS_DATA_TYPE_C_DELTA_STRING,
+  /**
+   * float
+   */
+  RAILWORKS_DATA_TYPE_S_FLOAT32,
+  /**
+   * char
+   */
+  RAILWORKS_DATA_TYPE_S_INT8,
+  /**
+   * short
+   */
+  RAILWORKS_DATA_TYPE_S_INT16,
+  /**
+   * int
+   */
+  RAILWORKS_DATA_TYPE_S_INT32,
+  /**
+   * long long
+   */
+  RAILWORKS_DATA_TYPE_S_INT64,
+  /**
+   * unsigned char
+   */
+  RAILWORKS_DATA_TYPE_S_U_INT8,
+  /**
+   * unsigned short
+   */
+  RAILWORKS_DATA_TYPE_S_U_INT16,
+  /**
+   * unsigned int
+   */
+  RAILWORKS_DATA_TYPE_S_U_INT32,
+  /**
+   * unsigned long long
+   */
+  RAILWORKS_DATA_TYPE_S_U_INT64,
+} RailWorksDataType;
+
 #endif
