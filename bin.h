@@ -154,4 +154,6 @@ typedef enum RailWorksDataType
   RAILWORKS_DATA_TYPE_S_U_INT64,
 } RailWorksDataType;
 
+char *railworks_data_type_to_string (RailWorksDataType type);
+
 #endif
