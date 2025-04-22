@@ -31,3 +31,64 @@ railworks_data_type_to_string (const RailWorksDataType type)
       return NULL;
     }
 }
+
+RailWorksDataType
+string_to_railworks_data_type (const char *string)
+{
+  if (strcmp (string, "bool") == 0)
+    {
+      return RAILWORKS_DATA_TYPE_BOOL;
+    }
+
+  if (strcmp (string, "cDeltaString") == 0)
+    {
+      return RAILWORKS_DATA_TYPE_C_DELTA_STRING;
+    }
+
+  if (strcmp (string, "sFloat32") == 0)
+    {
+      return RAILWORKS_DATA_TYPE_S_FLOAT32;
+    }
+
+  if (strcmp (string, "sInt8") == 0)
+    {
+      return RAILWORKS_DATA_TYPE_S_INT8;
+    }
+
+  if (strcmp (string, "sInt16") == 0)
+    {
+      return RAILWORKS_DATA_TYPE_S_INT16;
+    }
+
+  if (strcmp (string, "sInt32") == 0)
+    {
+      return RAILWORKS_DATA_TYPE_S_INT32;
+    }
+
+  if (strcmp (string, "sInt64") == 0)
+    {
+      return RAILWORKS_DATA_TYPE_S_INT64;
+    }
+
+  if (strcmp (string, "sUInt8") == 0)
+    {
+      return RAILWORKS_DATA_TYPE_S_U_INT8;
+    }
+
+  if (strcmp (string, "sUInt16") == 0)
+    {
+      return RAILWORKS_DATA_TYPE_S_U_INT16;
+    }
+
+  if (strcmp (string, "sUInt32") == 0)
+    {
+      return RAILWORKS_DATA_TYPE_S_U_INT32;
+    }
+
+  if (strcmp (string, "sUInt64") == 0)
+    {
+      return RAILWORKS_DATA_TYPE_S_U_INT64;
+    }
+
+  return -1;
+}

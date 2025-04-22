@@ -156,4 +156,6 @@ typedef enum RailWorksDataType
 
 char *railworks_data_type_to_string (RailWorksDataType type);
 
+RailWorksDataType string_to_railworks_data_type (const char *string);
+
 #endif
