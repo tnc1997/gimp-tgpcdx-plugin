@@ -1,5 +1,10 @@
 #include "bin.h"
 
+#include <stdlib.h>
+#include <string.h>
+
+char *int_to_string (int i);
+
 char *
 railworks_data_type_to_string (const RailWorksDataType type)
 {
@@ -91,4 +96,21 @@ string_to_railworks_data_type (const char *string)
     }
 
   return -1;
+}
+
+char *
+int_to_string (const int i)
+{
+  const size_t size = snprintf (NULL, 0, "%d", i) + 1;
+
+  char *string;
+
+  if ((string = malloc (size)) == NULL)
+    {
+      return NULL;
+    }
+
+  snprintf (string, size, "%d", i);
+
+  return string;
 }
