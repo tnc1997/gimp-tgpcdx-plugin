@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+double bytes_to_double (const unsigned char *bytes);
+
 unsigned char *double_to_bytes (double d);
 
 char *int_to_string (int i);
@@ -98,6 +100,19 @@ string_to_railworks_data_type (const char *string)
     }
 
   return -1;
+}
+
+double
+bytes_to_double (const unsigned char *bytes)
+{
+  double d;
+
+  if (memcpy (&d, bytes, sizeof (d)) == NULL)
+    {
+      return -1;
+    }
+
+  return d;
 }
 
 unsigned char *
