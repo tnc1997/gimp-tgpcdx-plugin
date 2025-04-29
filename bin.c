@@ -7,6 +7,8 @@ double bytes_to_double (const unsigned char *bytes);
 
 unsigned char *double_to_bytes (double d);
 
+unsigned char *hex_to_bytes (const char *hex, size_t size);
+
 char *int_to_string (int i);
 
 char *
@@ -128,6 +130,34 @@ double_to_bytes (const double d)
   if (memcpy (bytes, &d, sizeof (d)) == NULL)
     {
       return NULL;
+    }
+
+  return bytes;
+}
+
+unsigned char *
+hex_to_bytes (const char *hex, const size_t size)
+{
+  if (hex == NULL)
+    {
+      return NULL;
+    }
+
+  unsigned char *bytes;
+
+  if ((bytes = malloc (size / 2 + 1)) == NULL)
+    {
+      return NULL;
+    }
+
+  for (int i = 0; i < size / 2; i++)
+    {
+      if (sscanf (hex + i * 2, "%02x", &bytes[i]) == 0)
+        {
+          free (bytes);
+
+          return NULL;
+        }
     }
 
   return bytes;
