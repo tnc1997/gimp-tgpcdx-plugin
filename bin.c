@@ -5,6 +5,8 @@
 
 double bytes_to_double (const unsigned char *bytes);
 
+char *bytes_to_hex (const unsigned char *bytes, size_t size);
+
 unsigned char *double_to_bytes (double d);
 
 unsigned char *hex_to_bytes (const char *hex, size_t size);
@@ -115,6 +117,34 @@ bytes_to_double (const unsigned char *bytes)
     }
 
   return d;
+}
+
+char *
+bytes_to_hex (const unsigned char *bytes, const size_t size)
+{
+  if (bytes == NULL)
+    {
+      return NULL;
+    }
+
+  char *hex;
+
+  if ((hex = malloc (size * 2 + 1)) == NULL)
+    {
+      return NULL;
+    }
+
+  for (int i = 0; i < size; i++)
+    {
+      if (sprintf (hex + i * 2, "%02x", bytes[i]) == 0)
+        {
+          free (hex);
+
+          return NULL;
+        }
+    }
+
+  return hex;
 }
 
 unsigned char *
