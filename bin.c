@@ -13,6 +13,8 @@ unsigned char *hex_to_bytes (const char *hex, size_t size);
 
 char *int_to_string (int i);
 
+int string_to_int (const char *string);
+
 char *
 railworks_data_type_to_string (const RailWorksDataType type)
 {
@@ -208,4 +210,15 @@ int_to_string (const int i)
   snprintf (string, size, "%d", i);
 
   return string;
+}
+
+int
+string_to_int (const char *string)
+{
+  if (string == NULL)
+    {
+      return -1;
+    }
+
+  return (int) strtol (string, NULL, 10);
 }
