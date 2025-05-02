@@ -184,12 +184,27 @@ hex_to_bytes (const char *hex, const size_t size)
 
   for (int i = 0; i < size / 2; i++)
     {
-      if (sscanf (hex + i * 2, "%02x", &bytes[i]) == 0)
+      char *dest = malloc (3);
+
+      if (memcpy (dest, hex + i * 2, 2) == 0)
         {
-          free (bytes);
+          free (dest);
 
           return NULL;
         }
+
+      char *end = NULL;
+
+      bytes[i] = strtol (dest, &end, 16);
+
+      if (end != dest + 2)
+        {
+          free (dest);
+
+          return NULL;
+        }
+
+      free (dest);
     }
 
   return bytes;
