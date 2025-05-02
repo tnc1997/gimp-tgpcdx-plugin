@@ -222,7 +222,12 @@ int_to_string (const int i)
       return NULL;
     }
 
-  snprintf (string, size, "%d", i);
+  if (snprintf (string, size, "%d", i) == 0)
+    {
+      free (string);
+
+      return NULL;
+    }
 
   return string;
 }
