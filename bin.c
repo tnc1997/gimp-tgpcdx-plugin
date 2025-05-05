@@ -9,6 +9,8 @@ char *bytes_to_hex (const unsigned char *bytes, size_t size);
 
 unsigned char *double_to_bytes (double d);
 
+char *double_to_string (double d);
+
 unsigned char *hex_to_bytes (const char *hex, size_t size);
 
 char *int_to_string (int i);
@@ -165,6 +167,28 @@ double_to_bytes (const double d)
     }
 
   return bytes;
+}
+
+char *
+double_to_string (const double d)
+{
+  const size_t size = snprintf (NULL, 0, "%f", d) + 1;
+
+  char *string;
+
+  if ((string = malloc (size)) == NULL)
+    {
+      return NULL;
+    }
+
+  if (snprintf (string, size, "%f", d) == 0)
+    {
+      free (string);
+
+      return NULL;
+    }
+
+  return string;
 }
 
 unsigned char *
