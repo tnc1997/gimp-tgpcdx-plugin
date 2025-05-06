@@ -15,6 +15,8 @@ unsigned char *hex_to_bytes (const char *hex, size_t size);
 
 char *int_to_string (int i);
 
+double string_to_double (const char *string);
+
 int string_to_int (const char *string);
 
 char *
@@ -254,6 +256,17 @@ int_to_string (const int i)
     }
 
   return string;
+}
+
+double
+string_to_double (const char *string)
+{
+  if (string == NULL)
+    {
+      return -1;
+    }
+
+  return strtod (string, NULL);
 }
 
 int
