@@ -15,6 +15,8 @@ unsigned char *hex_to_bytes (const char *hex, size_t size);
 
 char *int_to_string (int i);
 
+char *string_remove_whitespace (const char *string);
+
 double string_to_double (const char *string);
 
 int string_to_int (const char *string);
@@ -256,6 +258,38 @@ int_to_string (const int i)
     }
 
   return string;
+}
+
+char *
+string_remove_whitespace (const char *string)
+{
+  if (string == NULL)
+    {
+      return NULL;
+    }
+
+  char *result;
+
+  if ((result = malloc (strlen (string) + 1)) == NULL)
+    {
+      return NULL;
+    }
+
+  int count = 0;
+
+  for (int i = 0; i < strlen (string); i++)
+    {
+      if (string[i] != ' ')
+        {
+          result[count] = string[i];
+
+          count++;
+        }
+    }
+
+  result[count] = '\0';
+
+  return result;
 }
 
 double
