@@ -13,7 +13,7 @@ char *double_to_string (double d);
 
 unsigned char *hex_to_bytes (const char *hex, size_t size);
 
-char *int_to_string (int i);
+char *int_to_string (unsigned long int i);
 
 char *string_remove_whitespace (const char *string);
 
@@ -239,9 +239,9 @@ hex_to_bytes (const char *hex, const size_t size)
 }
 
 char *
-int_to_string (const int i)
+int_to_string (const unsigned long int i)
 {
-  const size_t size = snprintf (NULL, 0, "%d", i) + 1;
+  const size_t size = snprintf (NULL, 0, "%lu", i) + 1;
 
   char *string;
 
@@ -250,7 +250,7 @@ int_to_string (const int i)
       return NULL;
     }
 
-  if (snprintf (string, size, "%d", i) == 0)
+  if (snprintf (string, size, "%lu", i) == 0)
     {
       free (string);
 
