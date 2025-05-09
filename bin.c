@@ -3,6 +3,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define XML_NS_HREF   "http://www.kuju.com/TnT/2003/Delta"
+#define XML_NS_PREFIX "d"
+
+#define XML_NEW_NS xmlNewNs (NULL, XML_NS_HREF, XML_NS_PREFIX)
+
 double bytes_to_double (const unsigned char *bytes);
 
 char *bytes_to_hex (const unsigned char *bytes, size_t size);
