@@ -1,6 +1,8 @@
 #ifndef BIN_H
 #define BIN_H
 
+#include <libxml/tree.h>
+
 typedef enum BinElementType {
   /**
    * ```xml
