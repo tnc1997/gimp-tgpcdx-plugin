@@ -154,6 +154,8 @@ typedef enum RailWorksDataType
   RAILWORKS_DATA_TYPE_S_U_INT64,
 } RailWorksDataType;
 
+typedef struct BinElement BinElement;
+
 char *railworks_data_type_to_string (RailWorksDataType type);
 
 RailWorksDataType string_to_railworks_data_type (const char *string);
