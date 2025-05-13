@@ -8,6 +8,8 @@
 
 #define XML_NEW_NS xmlNewNs (NULL, XML_NS_HREF, XML_NS_PREFIX)
 
+char *bool_to_string (bool b);
+
 double bytes_to_double (const unsigned char *bytes);
 
 char *bytes_to_hex (const unsigned char *bytes, size_t size);
@@ -115,6 +117,11 @@ string_to_railworks_data_type (const char *string)
     }
 
   return -1;
+}
+
+bool_to_string (const bool b)
+{
+  return b == true ? "1" : "0";
 }
 
 double
