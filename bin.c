@@ -22,8 +22,6 @@ char *number_to_string (const char *format, const void *number);
 
 char *string_remove_whitespace (const char *string);
 
-int string_to_int (const char *string);
-
 char *
 railworks_data_type_to_string (const RailWorksDataType type)
 {
@@ -276,15 +274,4 @@ string_remove_whitespace (const char *string)
   result[count] = '\0';
 
   return result;
-}
-
-int
-string_to_int (const char *string)
-{
-  if (string == NULL)
-    {
-      return -1;
-    }
-
-  return (int) strtol (string, NULL, 10);
 }
