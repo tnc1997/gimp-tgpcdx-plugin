@@ -8,6 +8,12 @@
 
 #define XML_NEW_NS xmlNewNs (NULL, XML_NS_HREF, XML_NS_PREFIX)
 
+typedef struct BinBlobElement
+{
+  size_t         size;
+  unsigned char *bytes;
+} BinBlobElement;
+
 char *bool_to_string (bool b);
 
 double bytes_to_double (const unsigned char *bytes);
