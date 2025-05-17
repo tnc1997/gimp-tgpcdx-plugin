@@ -14,6 +14,11 @@ typedef struct BinBlobElement
   unsigned char *bytes;
 } BinBlobElement;
 
+typedef struct BinClosingElement
+{
+  char *name;
+} BinClosingElement;
+
 char *bool_to_string (bool b);
 
 double bytes_to_double (const unsigned char *bytes);
