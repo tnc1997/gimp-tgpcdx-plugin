@@ -19,6 +19,14 @@ typedef struct BinClosingElement
   char *name;
 } BinClosingElement;
 
+typedef struct BinMatrixElement
+{
+  char             *name;
+  RailWorksDataType element_type;
+  size_t            num_elements;
+  void            **elements;
+} BinMatrixElement;
+
 char *bool_to_string (bool b);
 
 double bytes_to_double (const unsigned char *bytes);
