@@ -27,6 +27,10 @@ typedef struct BinMatrixElement
   void            **elements;
 } BinMatrixElement;
 
+typedef struct BinNullElement
+{
+} BinNullElement;
+
 char *bool_to_string (bool b);
 
 double bytes_to_double (const unsigned char *bytes);
