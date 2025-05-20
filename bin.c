@@ -31,6 +31,13 @@ typedef struct BinNullElement
 {
 } BinNullElement;
 
+typedef struct BinOpeningElement
+{
+  char             *name;
+  unsigned long int id;
+  size_t            num_children;
+} BinOpeningElement;
+
 char *bool_to_string (bool b);
 
 double bytes_to_double (const unsigned char *bytes);
