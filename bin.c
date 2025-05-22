@@ -44,6 +44,13 @@ typedef struct BinReferenceElement
   unsigned long int id;
 } BinReferenceElement;
 
+typedef struct BinValueElement
+{
+  char             *name;
+  RailWorksDataType type;
+  void             *value;
+} BinValueElement;
+
 char *bool_to_string (bool b);
 
 double bytes_to_double (const unsigned char *bytes);
