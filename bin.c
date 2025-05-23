@@ -51,6 +51,17 @@ typedef struct BinValueElement
   void             *value;
 } BinValueElement;
 
+typedef union BinElementData
+{
+  BinBlobElement      *blob;
+  BinClosingElement   *closing;
+  BinMatrixElement    *matrix;
+  BinNullElement      *null;
+  BinOpeningElement   *opening;
+  BinReferenceElement *reference;
+  BinValueElement     *value;
+} BinElementData;
+
 char *bool_to_string (bool b);
 
 double bytes_to_double (const unsigned char *bytes);
