@@ -62,6 +62,12 @@ typedef union BinElementData
   BinValueElement     *value;
 } BinElementData;
 
+struct BinElement
+{
+  BinElementData data;
+  BinElementType type;
+};
+
 char *bool_to_string (bool b);
 
 double bytes_to_double (const unsigned char *bytes);
