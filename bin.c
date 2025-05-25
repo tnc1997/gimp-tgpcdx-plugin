@@ -82,6 +82,8 @@ char *number_to_string (const char *format, const void *number);
 
 char *string_remove_whitespace (const char *string);
 
+BinBlobElement *xml_node_to_bin_blob_element (const xmlNode *node);
+
 char *
 railworks_data_type_to_string (const RailWorksDataType type)
 {
@@ -334,4 +336,53 @@ string_remove_whitespace (const char *string)
   result[count] = '\0';
 
   return result;
+}
+
+BinBlobElement *
+xml_node_to_bin_blob_element (const xmlNode *node)
+{
+  BinBlobElement *element;
+
+  if ((element = malloc (sizeof (*element))) == NULL)
+    {
+      return NULL;
+    }
+
+  const char *size;
+
+  if ((size = (char *) xmlGetNsProp (node, "size", XML_NS_HREF)) == NULL)
+    {
+      free (element);
+
+      return NULL;
+    }
+
+  element->size = strtoul (size, NULL, 10);
+
+  const char *content;
+
+  if ((content = (char *) xmlNodeGetContent (node)) == NULL)
+    {
+      free (element);
+
+      return NULL;
+    }
+
+  const char *hex;
+
+  if ((hex = string_remove_whitespace (content)) == NULL)
+    {
+      free (element);
+
+      return NULL;
+    }
+
+  if ((element->bytes = hex_to_bytes (hex, strlen (hex))) == NULL)
+    {
+      free (element);
+
+      return NULL;
+    }
+
+  return element;
 }
