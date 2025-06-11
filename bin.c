@@ -84,6 +84,8 @@ char *string_remove_whitespace (const char *string);
 
 BinBlobElement *xml_node_to_bin_blob_element (const xmlNode *node);
 
+BinMatrixElement *xml_node_to_bin_matrix_element (const xmlNode *node);
+
 char *
 railworks_data_type_to_string (const RailWorksDataType type)
 {
@@ -382,6 +384,149 @@ xml_node_to_bin_blob_element (const xmlNode *node)
       free (element);
 
       return NULL;
+    }
+
+  return element;
+}
+
+BinMatrixElement *
+xml_node_to_bin_matrix_element (const xmlNode *node)
+{
+  BinMatrixElement *element;
+
+  if ((element = malloc (sizeof (*element))) == NULL)
+    {
+      return NULL;
+    }
+
+  if ((element->name = malloc (strlen ((char *) node->name) + 1)) == NULL)
+    {
+      free (element);
+
+      return NULL;
+    }
+
+  if (strcpy (element->name, (char *) node->name) == NULL)
+    {
+      free (element);
+
+      return NULL;
+    }
+
+  const char *element_type;
+
+  if ((element_type = (char *) xmlGetNsProp (node, "elementType", XML_NS_HREF)) == NULL)
+    {
+      free (element);
+
+      return NULL;
+    }
+
+  if ((element->element_type = string_to_railworks_data_type (element_type)) == -1)
+    {
+      free (element);
+
+      return NULL;
+    }
+
+  const char *num_elements;
+
+  if ((num_elements = (char *) xmlGetNsProp (node, "numElements", XML_NS_HREF)) == NULL)
+    {
+      free (element);
+
+      return NULL;
+    }
+
+  element->num_elements = strtoul (num_elements, NULL, 10);
+
+  if ((element->elements = malloc (element->num_elements * sizeof (*element->elements))) == NULL)
+    {
+      free (element);
+
+      return NULL;
+    }
+
+  char *content;
+
+  if ((content = (char *) xmlNodeGetContent (node)) == NULL)
+    {
+      free (element);
+
+      return NULL;
+    }
+
+  const char *token = strtok (content, " ");
+
+  for (int i = 0; i < element->num_elements; i++)
+    {
+      if (token == NULL)
+        {
+          free (element);
+
+          return NULL;
+        }
+
+      switch (element->element_type)
+        {
+        case RAILWORKS_DATA_TYPE_BOOL:
+          {
+            int value = strcmp (token, "1") == 0;
+
+            element->elements[i] = &value;
+
+            break;
+          }
+        case RAILWORKS_DATA_TYPE_C_DELTA_STRING:
+          {
+            if ((element->elements[i] = malloc (strlen (token) + 1)) == NULL)
+              {
+                free (element);
+
+                return NULL;
+              }
+
+            if (strcpy (element->elements[i], token) == NULL)
+              {
+                free (element);
+
+                return NULL;
+              }
+
+            break;
+          }
+        case RAILWORKS_DATA_TYPE_S_FLOAT32:
+          {
+            double value = strtod (token, NULL);
+
+            element->elements[i] = &value;
+
+            break;
+          }
+        case RAILWORKS_DATA_TYPE_S_INT8:
+        case RAILWORKS_DATA_TYPE_S_INT16:
+        case RAILWORKS_DATA_TYPE_S_INT32:
+        case RAILWORKS_DATA_TYPE_S_INT64:
+        case RAILWORKS_DATA_TYPE_S_U_INT8:
+        case RAILWORKS_DATA_TYPE_S_U_INT16:
+        case RAILWORKS_DATA_TYPE_S_U_INT32:
+        case RAILWORKS_DATA_TYPE_S_U_INT64:
+          {
+            unsigned long int value = strtoul (token, NULL, 10);
+
+            element->elements[i] = &value;
+
+            break;
+          }
+        default:
+          {
+            free (element);
+
+            return NULL;
+          }
+        }
+
+      token = strtok (NULL, " ");
     }
 
   return element;
