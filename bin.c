@@ -86,6 +86,8 @@ BinBlobElement *xml_node_to_bin_blob_element (const xmlNode *node);
 
 BinMatrixElement *xml_node_to_bin_matrix_element (const xmlNode *node);
 
+BinNullElement *xml_node_to_bin_null_element (const xmlNode *node);
+
 char *
 railworks_data_type_to_string (const RailWorksDataType type)
 {
@@ -527,6 +529,19 @@ xml_node_to_bin_matrix_element (const xmlNode *node)
         }
 
       token = strtok (NULL, " ");
+    }
+
+  return element;
+}
+
+BinNullElement *
+xml_node_to_bin_null_element (const xmlNode *node)
+{
+  BinNullElement *element;
+
+  if ((element = malloc (sizeof (*element))) == NULL)
+    {
+      return NULL;
     }
 
   return element;
