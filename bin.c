@@ -88,6 +88,8 @@ BinMatrixElement *xml_node_to_bin_matrix_element (const xmlNode *node);
 
 BinNullElement *xml_node_to_bin_null_element (const xmlNode *node);
 
+BinReferenceElement *xml_node_to_bin_reference_element (const xmlNode *node);
+
 char *
 railworks_data_type_to_string (const RailWorksDataType type)
 {
@@ -543,6 +545,44 @@ xml_node_to_bin_null_element (const xmlNode *node)
     {
       return NULL;
     }
+
+  return element;
+}
+
+BinReferenceElement *
+xml_node_to_bin_reference_element (const xmlNode *node)
+{
+  BinReferenceElement *element;
+
+  if ((element = malloc (sizeof (*element))) == NULL)
+    {
+      return NULL;
+    }
+
+  if ((element->name = malloc (strlen ((char *) node->name) + 1)) == NULL)
+    {
+      free (element);
+
+      return NULL;
+    }
+
+  if (strcpy (element->name, (char *) node->name) == NULL)
+    {
+      free (element);
+
+      return NULL;
+    }
+
+  const char *content;
+
+  if ((content = (char *) xmlNodeGetContent (node)) == NULL)
+    {
+      free (element);
+
+      return NULL;
+    }
+
+  element->id = strtoul (content, NULL, 10);
 
   return element;
 }
