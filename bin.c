@@ -90,6 +90,8 @@ BinNullElement *xml_node_to_bin_null_element (const xmlNode *node);
 
 BinReferenceElement *xml_node_to_bin_reference_element (const xmlNode *node);
 
+BinValueElement *xml_node_to_bin_value_element (const xmlNode *node);
+
 char *
 railworks_data_type_to_string (const RailWorksDataType type)
 {
@@ -583,6 +585,117 @@ xml_node_to_bin_reference_element (const xmlNode *node)
     }
 
   element->id = strtoul (content, NULL, 10);
+
+  return element;
+}
+
+BinValueElement *
+xml_node_to_bin_value_element (const xmlNode *node)
+{
+  BinValueElement *element;
+
+  if ((element = malloc (sizeof (*element))) == NULL)
+    {
+      return NULL;
+    }
+
+  if ((element->name = malloc (strlen ((char *) node->name) + 1)) == NULL)
+    {
+      free (element);
+
+      return NULL;
+    }
+
+  if (strcpy (element->name, (char *) node->name) == NULL)
+    {
+      free (element);
+
+      return NULL;
+    }
+
+  const char *type;
+
+  if ((type = (char *) xmlGetNsProp (node, "type", XML_NS_HREF)) == NULL)
+    {
+      free (element);
+
+      return NULL;
+    }
+
+  if ((element->type = string_to_railworks_data_type (type)) == -1)
+    {
+      free (element);
+
+      return NULL;
+    }
+
+  const char *content;
+
+  if ((content = (char *) xmlNodeGetContent (node)) == NULL)
+    {
+      free (element);
+
+      return NULL;
+    }
+
+  switch (element->type)
+    {
+    case RAILWORKS_DATA_TYPE_BOOL:
+      {
+        int value = strcmp (content, "1") == 0;
+
+        element->value = &value;
+
+        break;
+      }
+    case RAILWORKS_DATA_TYPE_C_DELTA_STRING:
+      {
+        if ((element->value = malloc (strlen (content) + 1)) == NULL)
+          {
+            free (element);
+
+            return NULL;
+          }
+
+        if (strcpy (element->value, content) == NULL)
+          {
+            free (element);
+
+            return NULL;
+          }
+
+        break;
+      }
+    case RAILWORKS_DATA_TYPE_S_FLOAT32:
+      {
+        double value = strtod (content, NULL);
+
+        element->value = &value;
+
+        break;
+      }
+    case RAILWORKS_DATA_TYPE_S_INT8:
+    case RAILWORKS_DATA_TYPE_S_INT16:
+    case RAILWORKS_DATA_TYPE_S_INT32:
+    case RAILWORKS_DATA_TYPE_S_INT64:
+    case RAILWORKS_DATA_TYPE_S_U_INT8:
+    case RAILWORKS_DATA_TYPE_S_U_INT16:
+    case RAILWORKS_DATA_TYPE_S_U_INT32:
+    case RAILWORKS_DATA_TYPE_S_U_INT64:
+      {
+        unsigned long int value = strtoul (content, NULL, 10);
+
+        element->value = &value;
+
+        break;
+      }
+    default:
+      {
+        free (element);
+
+        return NULL;
+      }
+    }
 
   return element;
 }
