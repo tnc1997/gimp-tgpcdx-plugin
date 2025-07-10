@@ -68,6 +68,8 @@ struct BinElement
   BinElementType type;
 };
 
+xmlNode *bin_blob_element_to_xml_node (const BinBlobElement *element);
+
 char *bool_to_string (bool b);
 
 double bytes_to_double (const unsigned char *bytes);
@@ -183,6 +185,20 @@ string_to_railworks_data_type (const char *string)
     }
 
   return -1;
+}
+
+xmlNode *
+bin_blob_element_to_xml_node (const BinBlobElement *element)
+{
+  xmlNode *node = xmlNewNode (XML_NEW_NS, "blob");
+
+  const char *size = number_to_string ("%lu", &element->size);
+  xmlNewNsProp (node, XML_NEW_NS, "size", (xmlChar *) size);
+
+  const char *content = bytes_to_hex (element->bytes, element->size);
+  xmlNodeSetContent (node, (xmlChar *) content);
+
+  return node;
 }
 
 bool_to_string (const bool b)
