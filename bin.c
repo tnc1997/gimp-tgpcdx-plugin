@@ -70,6 +70,8 @@ struct BinElement
 
 xmlNode *bin_blob_element_to_xml_node (const BinBlobElement *element);
 
+xmlNode *bin_closing_element_to_xml_node (const BinClosingElement *element);
+
 char *bool_to_string (bool b);
 
 double bytes_to_double (const unsigned char *bytes);
@@ -199,6 +201,12 @@ bin_blob_element_to_xml_node (const BinBlobElement *element)
   xmlNodeSetContent (node, (xmlChar *) content);
 
   return node;
+}
+
+xmlNode *
+bin_closing_element_to_xml_node (const BinClosingElement *element)
+{
+  return xmlNewNode (NULL, (xmlChar *) element->name);
 }
 
 bool_to_string (const bool b)
