@@ -72,6 +72,8 @@ xmlNode *bin_blob_element_to_xml_node (const BinBlobElement *element);
 
 xmlNode *bin_closing_element_to_xml_node (const BinClosingElement *element);
 
+xmlNode *bin_matrix_element_to_xml_node (const BinMatrixElement *element);
+
 char *bool_to_string (bool b);
 
 double bytes_to_double (const unsigned char *bytes);
@@ -207,6 +209,155 @@ xmlNode *
 bin_closing_element_to_xml_node (const BinClosingElement *element)
 {
   return xmlNewNode (NULL, (xmlChar *) element->name);
+}
+
+xmlNode *
+bin_matrix_element_to_xml_node (const BinMatrixElement *element)
+{
+  xmlNode *node = xmlNewNode (NULL, (xmlChar *) element->name);
+
+  const char *num_elements = number_to_string ("%lu", &element->num_elements);
+  xmlNewNsProp (node, XML_NEW_NS, "numElements", (xmlChar *) num_elements);
+
+  const char *element_type = railworks_data_type_to_string (element->element_type);
+  xmlNewNsProp (node, XML_NEW_NS, "elementType", (xmlChar *) element_type);
+
+  if (element->element_type == RAILWORKS_DATA_TYPE_S_FLOAT32)
+    {
+      const char *precision = "string";
+      xmlNewNsProp (node, XML_NEW_NS, "precision", (xmlChar *) precision);
+    }
+
+  char **elements;
+
+  if ((elements = malloc (element->num_elements * sizeof (*elements))) == NULL)
+    {
+      free (node);
+
+      return NULL;
+    }
+
+  for (int i = 0; i < element->num_elements; i++)
+    {
+      switch (element->element_type)
+        {
+        case RAILWORKS_DATA_TYPE_BOOL:
+          {
+            if ((elements[i] = bool_to_string (*(bool *) &element->elements[i])) == NULL)
+              {
+                free (elements);
+                free (node);
+
+                return NULL;
+              }
+
+            break;
+          }
+        case RAILWORKS_DATA_TYPE_C_DELTA_STRING:
+          {
+            if ((elements[i] = malloc (strlen (element->elements[i]) + 1)) == NULL)
+              {
+                free (elements);
+                free (node);
+
+                return NULL;
+              }
+
+            if (strcpy (elements[i], element->elements[i]) == NULL)
+              {
+                free (elements);
+                free (node);
+
+                return NULL;
+              }
+
+            break;
+          }
+        case RAILWORKS_DATA_TYPE_S_FLOAT32:
+          {
+            if ((elements[i] = number_to_string ("%.7f", element->elements[i])) == NULL)
+              {
+                free (elements);
+                free (node);
+
+                return NULL;
+              }
+
+            break;
+          }
+        case RAILWORKS_DATA_TYPE_S_INT8:
+        case RAILWORKS_DATA_TYPE_S_INT16:
+        case RAILWORKS_DATA_TYPE_S_INT32:
+        case RAILWORKS_DATA_TYPE_S_INT64:
+        case RAILWORKS_DATA_TYPE_S_U_INT8:
+        case RAILWORKS_DATA_TYPE_S_U_INT16:
+        case RAILWORKS_DATA_TYPE_S_U_INT32:
+        case RAILWORKS_DATA_TYPE_S_U_INT64:
+          {
+            if ((elements[i] = number_to_string ("%ld", element->elements[i])) == NULL)
+              {
+                free (elements);
+                free (node);
+
+                return NULL;
+              }
+
+            break;
+          }
+        default:
+          {
+            free (elements);
+            free (node);
+
+            return NULL;
+          }
+        }
+    }
+
+  size_t size = 0;
+
+  for (int i = 0; i < element->num_elements; i++)
+    {
+      size += strlen (elements[i]) + 1;
+    }
+
+  char *content;
+
+  if ((content = malloc (size)) == NULL)
+    {
+      free (elements);
+      free (node);
+
+      return NULL;
+    }
+
+  for (int i = 0; i < element->num_elements; i++)
+    {
+      if (sprintf (content + i * (size + 1), "%s", elements[i]) == 0)
+        {
+          free (content);
+          free (elements);
+          free (node);
+
+          return NULL;
+        }
+
+      if (sprintf (content + i * (size + 1) + strlen (elements[i]) + 1, "%c", ' ') == 0)
+        {
+          free (content);
+          free (elements);
+          free (node);
+
+          return NULL;
+        }
+    }
+
+  xmlNodeSetContent (node, (xmlChar *) content);
+
+  free (content);
+  free (elements);
+
+  return node;
 }
 
 bool_to_string (const bool b)
