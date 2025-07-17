@@ -74,6 +74,8 @@ xmlNode *bin_closing_element_to_xml_node (const BinClosingElement *element);
 
 xmlNode *bin_matrix_element_to_xml_node (const BinMatrixElement *element);
 
+xmlNode *bin_null_element_to_xml_node (const BinNullElement *element);
+
 char *bool_to_string (bool b);
 
 double bytes_to_double (const unsigned char *bytes);
@@ -358,6 +360,12 @@ bin_matrix_element_to_xml_node (const BinMatrixElement *element)
   free (elements);
 
   return node;
+}
+
+xmlNode *
+bin_null_element_to_xml_node (const BinNullElement *element)
+{
+  return xmlNewNode (XML_NEW_NS, "nil");
 }
 
 bool_to_string (const bool b)
