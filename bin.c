@@ -78,6 +78,8 @@ xmlNode *bin_null_element_to_xml_node (const BinNullElement *element);
 
 xmlNode *bin_opening_element_to_xml_node (const BinOpeningElement *element);
 
+xmlNode *bin_reference_element_to_xml_node (const BinReferenceElement *element);
+
 char *bool_to_string (bool b);
 
 double bytes_to_double (const unsigned char *bytes);
@@ -380,6 +382,16 @@ bin_opening_element_to_xml_node (const BinOpeningElement *element)
       const char *id = number_to_string ("%lu", &element->id);
       xmlNewNsProp (node, XML_NEW_NS, "id", (xmlChar *) id);
     }
+
+  return node;
+}
+
+xmlNode *
+bin_reference_element_to_xml_node (const BinReferenceElement *element)
+{
+  xmlNode *node = xmlNewNode (NULL, (xmlChar *) element->name);
+
+  xmlNewNsProp (node, XML_NEW_NS, "type", "ref");
 
   return node;
 }
