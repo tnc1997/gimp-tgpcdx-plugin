@@ -80,6 +80,8 @@ xmlNode *bin_opening_element_to_xml_node (const BinOpeningElement *element);
 
 xmlNode *bin_reference_element_to_xml_node (const BinReferenceElement *element);
 
+xmlNode *bin_value_element_to_xml_node (const BinValueElement *element);
+
 char *bool_to_string (bool b);
 
 double bytes_to_double (const unsigned char *bytes);
@@ -396,6 +398,29 @@ bin_reference_element_to_xml_node (const BinReferenceElement *element)
   return node;
 }
 
+xmlNode *
+bin_value_element_to_xml_node (const BinValueElement *element)
+{
+  xmlNode *node = xmlNewNode (NULL, (xmlChar *) element->name);
+
+  const char *type = railworks_data_type_to_string (element->type);
+  xmlNewNsProp (node, XML_NEW_NS, "type", (xmlChar *) type);
+
+  if (element->type == RAILWORKS_DATA_TYPE_S_FLOAT32)
+    {
+      const double         value        = *(double *) &element->value;
+      const unsigned char *bytes        = double_to_bytes (value);
+      const char          *alt_encoding = bytes_to_hex (bytes, sizeof (value));
+      xmlNewNsProp (node, XML_NEW_NS, "alt_encoding", (xmlChar *) alt_encoding);
+
+      const char *precision = "string";
+      xmlNewNsProp (node, XML_NEW_NS, "precision", (xmlChar *) precision);
+    }
+
+  return node;
+}
+
+char *
 bool_to_string (const bool b)
 {
   return b == true ? "1" : "0";
