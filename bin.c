@@ -199,6 +199,96 @@ string_to_railworks_data_type (const char *string)
   return -1;
 }
 
+BinElement *
+xml_node_to_bin_element (const xmlNode *node)
+{
+  const char *element_type = (char *) xmlGetNsProp (node, "elementType", XML_NS_HREF);
+  const char *num_elements = (char *) xmlGetNsProp (node, "numElements", XML_NS_HREF);
+  const char *size         = (char *) xmlGetNsProp (node, "size", XML_NS_HREF);
+  const char *type         = (char *) xmlGetNsProp (node, "type", XML_NS_HREF);
+
+  BinElement *element;
+
+  if ((element = malloc (sizeof (BinElement))) == NULL)
+    {
+      return NULL;
+    }
+
+  if (strcmp ((char *) node->name, "blob") == 0 && size != NULL)
+    {
+      element->type = BIN_ELEMENT_TYPE_BLOB;
+
+      if ((element->data.blob = xml_node_to_bin_blob_element (node)) == NULL)
+        {
+          free (element);
+
+          return NULL;
+        }
+
+      return element;
+    }
+
+  if (element_type != NULL && num_elements != NULL)
+    {
+      element->type = BIN_ELEMENT_TYPE_MATRIX;
+
+      if ((element->data.matrix = xml_node_to_bin_matrix_element (node)) == NULL)
+        {
+          free (element);
+
+          return NULL;
+        }
+
+      return element;
+    }
+
+  if (strcmp ((char *) node->name, "nil") == 0)
+    {
+      element->type = BIN_ELEMENT_TYPE_NULL;
+
+      if ((element->data.null = xml_node_to_bin_null_element (node)) == NULL)
+        {
+          free (element);
+
+          return NULL;
+        }
+
+      return element;
+    }
+
+  if (strcmp (type, "ref") == 0)
+    {
+      element->type = BIN_ELEMENT_TYPE_REFERENCE;
+
+      if ((element->data.reference = xml_node_to_bin_reference_element (node)) == NULL)
+        {
+          free (element);
+
+          return NULL;
+        }
+
+      return element;
+    }
+
+  if (type != NULL)
+    {
+      element->type = BIN_ELEMENT_TYPE_VALUE;
+
+      if ((element->data.value = xml_node_to_bin_value_element (node)) == NULL)
+        {
+          free (element);
+
+          return NULL;
+        }
+
+      return element;
+    }
+
+  free (element);
+
+  return NULL;
+}
+
 xmlNode *
 bin_blob_element_to_xml_node (const BinBlobElement *element)
 {
