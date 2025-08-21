@@ -106,6 +106,30 @@ BinReferenceElement *xml_node_to_bin_reference_element (const xmlNode *node);
 
 BinValueElement *xml_node_to_bin_value_element (const xmlNode *node);
 
+xmlNode *
+bin_element_to_xml_node (const BinElement *element)
+{
+  switch (element->type)
+    {
+    case BIN_ELEMENT_TYPE_MATRIX:
+      return bin_matrix_element_to_xml_node (element->data.matrix);
+    case BIN_ELEMENT_TYPE_BLOB:
+      return bin_blob_element_to_xml_node (element->data.blob);
+    case BIN_ELEMENT_TYPE_NULL:
+      return bin_null_element_to_xml_node (element->data.null);
+    case BIN_ELEMENT_TYPE_OPENING:
+      return bin_opening_element_to_xml_node (element->data.opening);
+    case BIN_ELEMENT_TYPE_REFERENCE:
+      return bin_reference_element_to_xml_node (element->data.reference);
+    case BIN_ELEMENT_TYPE_VALUE:
+      return bin_value_element_to_xml_node (element->data.value);
+    case BIN_ELEMENT_TYPE_CLOSING:
+      return bin_closing_element_to_xml_node (element->data.closing);
+    default:
+      return NULL;
+    }
+}
+
 char *
 railworks_data_type_to_string (const RailWorksDataType type)
 {
